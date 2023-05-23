@@ -17,14 +17,12 @@ class ConfigBuilder:
         return self.config.make_wsgi_app()
 
 
-def main():
-    """Do the thing."""
+def app():
+    """Build WSGI App mapping environmental settings to ConfigBuilder."""
     config_builder = ConfigBuilder()
-    app = config_builder()
-
-    server = make_server('0.0.0.0', 6543, app)
-    server.serve_forever()
+    return config_builder()
 
 
 if __name__ == "__main__":
-    main()
+    server = make_server('0.0.0.0', 6543, app())
+    server.serve_forever()
