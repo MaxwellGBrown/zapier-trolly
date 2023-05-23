@@ -1,0 +1,47 @@
+Zapier eventbus can be prototyped with a super-simple integration.
+
+Simply, the integration is like simple-rest-store, but with a trigger that listens when new objects are added.
+
+Authorization is a simple API key `Authorization: Key ...", and would effectively work as a tenet; separate API keys
+tie to separate events.
+
+----
+Version 1 
+
+GET /events
+Returns arbitrary JSON objects that are ID'd so zapier polling can discover them
+(Add this as a trigger to integration!)
+
+POST /events
+Take an arbitrarily posted JSON object, give it an incremental id, and add it to the results of GET /events
+(Does _not_ fit as a trigger to an integration!)
+
+Problem: how do you only proceed on certain types of events? In Zapier you could filter down/
+
+-----
+Version 2? Let you define schemas that can Dynamic-populate the POST /events route.
+
+GET /events
+  Retrieve events, newest with highest ID
+POST /events
+  {
+    "schema": <schema_id>,
+    "data": {...},
+  }
+
+GET /schemas
+  Lists schemas
+POST /schemas
+  {
+    "name": "",
+    "jsonschema": {...},
+  }
+
+With this you can add a filter step, but it'll still trigger off _every_ type of event, except a single one
+You can't delete a schema, otherwise how would you ever validate the old events of that schema?
+
+-----------
+Version 3
+
+GET /events?schema=<schema_id>
+Return only events that match the schema. No QS will return _all_ events.
