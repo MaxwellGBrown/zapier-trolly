@@ -15,5 +15,5 @@ A simple WSGI server backing a Zapier integration to emulate an event bus.
 1. Run the local server
 
    ```
-   python trolly.py
+   gunicorn "trolly:wsgi()"
    ```
